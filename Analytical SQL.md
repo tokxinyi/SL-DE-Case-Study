@@ -51,3 +51,7 @@ where b.product_id is null
 ```
 
 # Implementing Business Logics in Data Marts
+
+![Star Diagram](https://github.com/tokxinyi/blob/main/star_diagram.png)
+
+We can create the sales fact view with the sales numbers aggregated based on the dates, product_id or other columns based on requirements. Then the business units can get the aggregated data without having to use filters or group by.
