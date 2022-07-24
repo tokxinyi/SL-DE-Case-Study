@@ -92,4 +92,4 @@ After considering all the different use cases that the business need for analysi
 4. To improve the lookup times, indexes for the foreign keys are added as well.
 
 # ER Diagram
-![ER Diagram](https://github.com/tokxinyi/SL-DE-Case-Study//blob/main/er_diagram.png)
+![ER Diagram](https://github.com/tokxinyi/SL-DE-Case-Study/blob/main/er_diagram.png)
