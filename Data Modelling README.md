@@ -15,8 +15,9 @@ group by order_id
 where order_date >= 2022-06-01 and order_date <= 2022-06-30
 ```
 What should be created here to improve performance:
-1. Create a partition for order_date (orders table) in terms of year
-2. Create index on order_id (created because is defined as primary key)
+1. Create a partition for `order_date` (orders table) in terms of year
+2. Create index on `order_id` (created because is defined as primary key)
+3. Create index on foreign key `order_item_product_id` at `order_items` table
 
 
 # Item sales
@@ -32,25 +33,27 @@ group by order_items.product_id, orders.order_date
 where order_date >= {time_period}
 ```
 What should be created here to improve performance:
-1. Create index on product_id (created when defined as primary key)
-2. Same as 1 in revenue
+1. Create index on `product_id` (created when defined as primary key)
+2. Create a partition for `order_date` (orders table) in terms of year
 
 # Price changes
 Assumptions:
 1. It is a slowly changing dimension
 
 Tables required:
-1. order_items - product_price
+1. order_items - product_price, order_items_product_id
 2. products - price
 
 What should be created here to improve performance:
-1. Create index on 
+1. Create a partition for `order_date` (orders table) in terms of year
+2. Create index on foreign key `order_item_product_id` at `order_items` table
 
 # Product
 Tables required:
 1. products
 2. order_items
 3. orders
+4. Categories
 
 Example query:
 ```sql
@@ -61,7 +64,12 @@ on products.product_id = order_items.order_item_product_id
 ```
 
 What should be created here to improve performance:
-1. Create index on product_id, order_item_id and order_id (created when defined as primary key)
+1. Create index on `product_id`, `order_item_id` and `order_id` (created when defined as primary key)
+2. Create index on foreign keys on the following tables:
+    - orders: order_customer_id
+    - order_items: order_item_product_id
+    - products: product_category_id
+    - categories: category_department_id
 
 # Customer
 Tables required:
@@ -69,6 +77,7 @@ Tables required:
 
 What should be created here to improve performance:
 1. Create index on customer_id (created when defined as primary key)
+2. Create a partition for `order_date` (orders table) in terms of year
 
 # Date
 
@@ -81,3 +90,6 @@ After considering all the different use cases that the business need for analysi
 2. Making sure that the indexes of the primary keys are created.
 3. Foreign keys are added to ensure referential integrity of the data.
 4. To improve the lookup times, indexes for the foreign keys are added as well.
+
+# ER Diagram
+![ER Diagram](https://github.com/tokxinyi/SL-DE-Case-Study//blob/main/er_diagram.png)
